@@ -45,7 +45,9 @@ class BillFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arrayAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,mainActivity?.array?: arrayListOf())
+        arrayAdapter = ArrayAdapter(requireContext(),
+            android.R.layout.simple_list_item_1,
+            mainActivity?.array?: arrayListOf())
         binding?.lvListArrayAdapter?.adapter = arrayAdapter
         var itemSelected = binding?.lvListArrayAdapter?.toString()
         binding?.item?.setText(itemSelected)
@@ -66,7 +68,9 @@ class BillFragment : Fragment() {
             }
         }
       binding?.btnOrder?.setOnClickListener{
-          Toast.makeText(requireContext(), "Ordered Successfully", Toast.LENGTH_SHORT).show()
+          Toast.makeText(requireContext(),
+              "Ordered Successfully",
+              Toast.LENGTH_SHORT).show()
       }
     }
     companion object {
