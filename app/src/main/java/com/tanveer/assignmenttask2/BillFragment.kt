@@ -26,15 +26,15 @@ class BillFragment : Fragment() {
     var binding: FragmentBillBinding? = null
     var mainActivity: MainActivity? = null
     lateinit var arrayAdapter:ArrayAdapter<AdapterDataClass>
-    var  number = 1
+    var  number = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainActivity = activity as MainActivity
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,31 +43,28 @@ class BillFragment : Fragment() {
         // Inflate the layout for this fragment
         return binding?.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fun numberIncrement(){
-            number++
-            binding?.etEnterQuantity?.setText(number.toString())
-        }
-        fun numberDecrement(){
-            number--
-            binding?.etEnterQuantity?.setText(number.toString())
-        }
-        /*binding?.btnFabAdd?.setOnClickListener{
-            if (binding?.etEnterQuantity?.text?.toString()?.isNullOrEmpty()){
+        arrayAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,mainActivity?.array?: arrayListOf())
+        binding?.lvListArrayAdapter?.adapter = arrayAdapter
+        var itemSelected = binding?.lvListArrayAdapter?.toString()
+        binding?.item?.setText(itemSelected)
+        binding?.btnFabAdd?.setOnClickListener{
+            if (binding?.etEnterQuantity?.text?.toString()?.trim().isNullOrEmpty()){
                 binding?.etEnterQuantity?.error = "enter Quantity"
             } else{
-                numberIncrement()
+                number++
+                binding?.etEnterQuantity?.setText(number.toString())
             }
         }
         binding?.btnFabSub?.setOnClickListener{
-            if (binding?.etEnterQuantity?.text?.toString()?.isNullOrEmpty()){
+            if (binding?.etEnterQuantity?.text?.toString()?.trim().isNullOrEmpty() ){
                 binding?.etEnterQuantity?.error = "enter Quantity"
             } else{
-                numberDecrement()
+                number--
+                binding?.etEnterQuantity?.setText(number.toString())
             }
-        }*/
+        }
       binding?.btnOrder?.setOnClickListener{
           Toast.makeText(requireContext(), "Ordered Successfully", Toast.LENGTH_SHORT).show()
       }

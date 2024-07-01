@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import com.tanveer.assignmenttask2.databinding.CustomLayoutBinding
 import com.tanveer.assignmenttask2.databinding.FragmentItemBinding
@@ -51,54 +52,74 @@ class ItemFragment : Fragment() {
         var adapter = AdapterClass(mainActivity?.array?: arrayListOf())
 
         binding?.lvListArrayAdapter?.adapter = adapter
-        binding?.btnFab?.setOnClickListener{
+        binding?.btnFab?.setOnClickListener {
             val dialogBinding = CustomLayoutBinding.inflate(layoutInflater)
             val dialog = Dialog(requireContext()).apply {
                 setContentView(dialogBinding.root)
+                getWindow()?.setLayout(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.MATCH_PARENT
+                )
                 show()
             }
-            dialogBinding.btnAdd.setOnClickListener{
-                if (dialogBinding.etEnterItem.text?.toString()?.trim().isNullOrEmpty()){
+            dialogBinding.btnAdd.setOnClickListener {
+                if (dialogBinding.etEnterItem.text?.toString()?.trim().isNullOrEmpty()) {
                     dialogBinding.etEnterItem.error = resources.getString((R.string.enter_item))
-                } else if (dialogBinding.etEnterQuantity.text?.toString()?.trim().isNullOrEmpty()){
-                    dialogBinding.etEnterQuantity.error = resources.getString(R.string.enter_quantity)
-                }
-                else{ mainActivity?.array?.add(AdapterDataClass(
-                    dialogBinding.etEnterItem.text?.toString(),
-                   dialogBinding.etEnterQuantity.text?.toString()?.toInt())
-                )
+                } else if (dialogBinding.etEnterQuantity.text?.toString()?.trim().isNullOrEmpty()) {
+                    dialogBinding.etEnterQuantity.error =
+                        resources.getString(R.string.enter_quantity)
+                } else {
+                    mainActivity?.array?.add(
+                        AdapterDataClass(
+                            dialogBinding.etEnterItem.text?.toString(),
+                            dialogBinding.etEnterQuantity.text?.toString()?.toInt()
+                        )
+                    )
                     adapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
             }
-            binding?.lvListArrayAdapter?.setOnItemClickListener{ _,_,i,Long ->
+            binding?.lvListArrayAdapter?.setOnItemClickListener { _, _, i, Long ->
                 val dialogBinding = CustomLayoutBinding.inflate(layoutInflater)
                 val dialog = Dialog(requireContext()).apply {
                     setContentView(dialogBinding.root)
                     dialogBinding.btnAdd.setText(resources.getString(R.string.update))
                     show()
                 }
-                dialogBinding.btnAdd.setOnClickListener{
-                    if (dialogBinding.etEnterItem.text?.toString()?.trim().isNullOrEmpty()){
+                dialogBinding.btnAdd.setOnClickListener {
+                    if (dialogBinding.etEnterItem.text?.toString()?.trim().isNullOrEmpty()) {
                         dialogBinding.etEnterItem.error = resources.getString((R.string.enter_item))
-                    } else if()
+                    } else if (dialogBinding.etEnterQuantity.text?.toString()?.trim()
+                            .isNullOrEmpty()
+                    ) {
+                        dialogBinding.etEnterQuantity.error =
+                            resources.getString(R.string.enter_quantity)
+                    } else {
+                        mainActivity?.array?.set(
+                           i, AdapterDataClass(
+                                dialogBinding.etEnterItem.text?.toString(),
+                                dialogBinding.etEnterQuantity.text?.toString()?.toInt()
+                            )
+                        )
+                        adapter.notifyDataSetChanged()
+                        dialog.dismiss()
+                    }
                 }
-            }
-            binding?.lvListArrayAdapter?.setOnItemLongClickListener{ _,_,i,Long ->
-                var alertDialog = AlertDialog.Builder(requireContext())
+                binding?.lvListArrayAdapter?.setOnItemLongClickListener { _, _, i, Long ->
+                    var alertDialog = AlertDialog.Builder(requireContext())
 
-                alertDialog.setTitle(resources.getString(R.string.Do_you_want_to_delete_this_item))
-                alertDialog.setPositiveButton("Yes"){ _,_ ->
-                  mainActivity?.array?.removeAt(i)
-                    adapter.notifyDataSetChanged()
+                    alertDialog.setTitle(resources.getString(R.string.Do_you_want_to_delete_this_item))
+                    alertDialog.setPositiveButton("Yes") { _, _ ->
+                        mainActivity?.array?.removeAt(i)
+                        adapter.notifyDataSetChanged()
+                    }
+                    alertDialog.setNegativeButton("no") { _, _ ->
+                    }
+                    alertDialog.show()
+                    return@setOnItemLongClickListener true
                 }
-                alertDialog.setNegativeButton("no"){_,_ ->
-                }
-                alertDialog.show()
-                return@setOnItemLongClickListener true
             }
         }
-
     }
 
     companion object {
