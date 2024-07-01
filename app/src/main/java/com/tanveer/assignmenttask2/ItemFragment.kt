@@ -28,11 +28,10 @@ class ItemFragment : Fragment() {
     private var param2: String? = null
     var binding: FragmentItemBinding? = null
     var mainActivity: MainActivity? = null
-    var array = arrayListOf<AdapterDataClass>()
-    var adapter = AdapterClass(array)
-    lateinit var arrayAdapter: ArrayAdapter<String>
+    lateinit var adapterClass: AdapterClass
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainActivity = activity as MainActivity
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -49,6 +48,8 @@ class ItemFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var adapter = AdapterClass(mainActivity?.array?: arrayListOf())
+
         binding?.lvListArrayAdapter?.adapter = adapter
         binding?.btnFab?.setOnClickListener{
             val dialogBinding = CustomLayoutBinding.inflate(layoutInflater)
@@ -57,24 +58,38 @@ class ItemFragment : Fragment() {
                 show()
             }
             dialogBinding.btnAdd.setOnClickListener{
-                if (dialogBinding.etEnterItem?.text?.toString()?.trim().isNullOrEmpty()){
+                if (dialogBinding.etEnterItem.text?.toString()?.trim().isNullOrEmpty()){
                     dialogBinding.etEnterItem.error = resources.getString((R.string.enter_item))
-                } else if (dialogBinding.etEnterQuantity?.text?.toString()?.trim().isNullOrEmpty()){
+                } else if (dialogBinding.etEnterQuantity.text?.toString()?.trim().isNullOrEmpty()){
                     dialogBinding.etEnterQuantity.error = resources.getString(R.string.enter_quantity)
                 }
-                else{ array.add(AdapterDataClass(
-                    dialogBinding.etEnterItem?.text?.toString()?:"",
-                   dialogBinding.etEnterQuantity?.text?.toString()?.toInt())
+                else{ mainActivity?.array?.add(AdapterDataClass(
+                    dialogBinding.etEnterItem.text?.toString(),
+                   dialogBinding.etEnterQuantity.text?.toString()?.toInt())
                 )
                     adapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
             }
+            binding?.lvListArrayAdapter?.setOnItemClickListener{ _,_,i,Long ->
+                val dialogBinding = CustomLayoutBinding.inflate(layoutInflater)
+                val dialog = Dialog(requireContext()).apply {
+                    setContentView(dialogBinding.root)
+                    dialogBinding.btnAdd.setText(resources.getString(R.string.update))
+                    show()
+                }
+                dialogBinding.btnAdd.setOnClickListener{
+                    if (dialogBinding.etEnterItem.text?.toString()?.trim().isNullOrEmpty()){
+                        dialogBinding.etEnterItem.error = resources.getString((R.string.enter_item))
+                    } else if()
+                }
+            }
             binding?.lvListArrayAdapter?.setOnItemLongClickListener{ _,_,i,Long ->
                 var alertDialog = AlertDialog.Builder(requireContext())
+
                 alertDialog.setTitle(resources.getString(R.string.Do_you_want_to_delete_this_item))
                 alertDialog.setPositiveButton("Yes"){ _,_ ->
-                  array.removeAt(i)
+                  mainActivity?.array?.removeAt(i)
                     adapter.notifyDataSetChanged()
                 }
                 alertDialog.setNegativeButton("no"){_,_ ->

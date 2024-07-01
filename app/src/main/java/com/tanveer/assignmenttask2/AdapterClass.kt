@@ -24,7 +24,7 @@ class AdapterClass(var arrayList: ArrayList<AdapterDataClass>): BaseAdapter() {
             parent,false)
         var tvItemName = view.findViewById<TextView>(R.id.tvItemName)
         var tvQuantity = view.findViewById<TextView>(R.id.tvQuantity)
-       // tvItemName.setText(arrayList[position].ItemName)
+        tvItemName.setText(arrayList[position].item)
         tvQuantity.setText(arrayList[position].Quantity.toString())
         return view
     }

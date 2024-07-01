@@ -17,4 +17,5 @@
     <string name="Do_you_want_to_delete_this_item">Do You Want To Delete This Item</string>
     <string name="item_name">Item Name</string>
     <string name="quantity">Quantity</string>
+    <string name="update">UPDATE</string>
 </resources>
