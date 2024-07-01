@@ -18,4 +18,5 @@
     <string name="item_name">Item Name</string>
     <string name="quantity">Quantity</string>
     <string name="update">UPDATE</string>
+    <string-array name="itemsNames">Items Name</string-array>
 </resources>

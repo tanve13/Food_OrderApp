@@ -7,6 +7,7 @@
 <Spinner
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:entries="@array/itemsNames"
     android:id="@+id/lvList_Array_Adapter" />
     <TextView
         android:layout_width="match_parent"

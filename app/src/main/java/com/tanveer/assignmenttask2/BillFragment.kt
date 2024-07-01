@@ -68,9 +68,20 @@ class BillFragment : Fragment() {
             }
         }
       binding?.btnOrder?.setOnClickListener{
+          if(binding?.item?.text?.toString()?.isEmpty() == true){
+              Toast.makeText(requireContext(),
+                  "select an item from the list",
+                  Toast.LENGTH_SHORT).show()
+          } else if(binding?.etEnterQuantity?.text?.toString()?.isEmpty() == true){
+              Toast.makeText(requireContext(),
+                  "select the quantity first",
+                  Toast.LENGTH_SHORT).show()
+          }
+          else{
           Toast.makeText(requireContext(),
               "Ordered Successfully",
               Toast.LENGTH_SHORT).show()
+          }
       }
     }
     companion object {

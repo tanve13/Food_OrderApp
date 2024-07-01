@@ -50,7 +50,6 @@ class ItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var adapter = AdapterClass(mainActivity?.array?: arrayListOf())
-
         binding?.lvListArrayAdapter?.adapter = adapter
         binding?.btnFab?.setOnClickListener {
             val dialogBinding = CustomLayoutBinding.inflate(layoutInflater)
@@ -87,9 +86,9 @@ class ItemFragment : Fragment() {
                     show()
                 }
                 dialogBinding.btnAdd.setOnClickListener {
-                    if (dialogBinding.etEnterItem.text?.toString()?.trim().isNullOrEmpty()) {
+                    if (dialogBinding.etEnterItem.text.toString().trim().isNullOrEmpty()) {
                         dialogBinding.etEnterItem.error = resources.getString((R.string.enter_item))
-                    } else if (dialogBinding.etEnterQuantity.text?.toString()?.trim()
+                    } else if (dialogBinding.etEnterQuantity.text.toString().trim()
                             .isNullOrEmpty()
                     ) {
                         dialogBinding.etEnterQuantity.error =
@@ -97,8 +96,8 @@ class ItemFragment : Fragment() {
                     } else {
                         mainActivity?.array?.set(
                            i, AdapterDataClass(
-                                dialogBinding.etEnterItem.text?.toString(),
-                                dialogBinding.etEnterQuantity.text?.toString()?.toInt()
+                                dialogBinding.etEnterItem.text.toString(),
+                                dialogBinding.etEnterQuantity.text.toString()?.toInt()
                             )
                         )
                         adapter.notifyDataSetChanged()
@@ -107,7 +106,6 @@ class ItemFragment : Fragment() {
                 }
                 binding?.lvListArrayAdapter?.setOnItemLongClickListener { _, _, i, Long ->
                     var alertDialog = AlertDialog.Builder(requireContext())
-
                     alertDialog.setTitle(resources.getString(R.string.Do_you_want_to_delete_this_item))
                     alertDialog.setPositiveButton("Yes") { _, _ ->
                         mainActivity?.array?.removeAt(i)
