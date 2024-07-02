@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.tanveer.assignmenttask2.databinding.FragmentBillBinding
@@ -49,8 +50,21 @@ class BillFragment : Fragment() {
             android.R.layout.simple_list_item_1,
             mainActivity?.array?: arrayListOf())
         binding?.lvListArrayAdapter?.adapter = arrayAdapter
-        var itemSelected = binding?.lvListArrayAdapter?.toString()
-        binding?.item?.setText(itemSelected)
+        binding?.lvListArrayAdapter?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) { var selectedItem = binding?.lvListArrayAdapter as AdapterDataClass
+                    binding?.item?.setText(selectedItem.item)
+                   binding?.etEnterQuantity?.setText(selectedItem.Quantity.toString())
+                    
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+            }
         binding?.btnFabAdd?.setOnClickListener{
             if (binding?.etEnterQuantity?.text?.toString()?.trim().isNullOrEmpty()){
                 binding?.etEnterQuantity?.error = "enter Quantity"
