@@ -29,7 +29,7 @@ class ItemFragment : Fragment() {
     private var param2: String? = null
     var binding: FragmentItemBinding? = null
     var mainActivity: MainActivity? = null
-    lateinit var adapterClass: AdapterClass
+    lateinit var adapter: AdapterClass
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = activity as MainActivity
@@ -47,9 +47,10 @@ class ItemFragment : Fragment() {
         // Inflate the layout for this fragment
         return binding?.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var adapter = AdapterClass(mainActivity?.array?: arrayListOf())
+        var adapter = AdapterClass(mainActivity?.array ?: arrayListOf())
         binding?.lvListArrayAdapter?.adapter = adapter
         binding?.btnFab?.setOnClickListener {
             val dialogBinding = CustomLayoutBinding.inflate(layoutInflater)
@@ -75,6 +76,8 @@ class ItemFragment : Fragment() {
                         )
                     )
                     adapter.notifyDataSetChanged()
+                    val bundle = Bundle()
+                    bundle.putString("item", mainActivity?.array?.toString())
                     dialog.dismiss()
                 }
             }
@@ -95,9 +98,9 @@ class ItemFragment : Fragment() {
                             resources.getString(R.string.enter_quantity)
                     } else {
                         mainActivity?.array?.set(
-                           i, AdapterDataClass(
+                            i, AdapterDataClass(
                                 dialogBinding.etEnterItem.text.toString(),
-                                dialogBinding.etEnterQuantity.text.toString()?.toInt()
+                                dialogBinding.etEnterQuantity.text.toString().toInt()
                             )
                         )
                         adapter.notifyDataSetChanged()
