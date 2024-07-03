@@ -28,12 +28,15 @@ class BillFragment : Fragment() {
     var mainActivity: MainActivity? = null
     lateinit var arrayAdapter:ArrayAdapter<AdapterDataClass>
     var  number = 0
+    var selectedItem = AdapterDataClass()
+    var item = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = activity as MainActivity
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+            item = it.getString("item")?:""
         }
     }
     override fun onCreateView(
@@ -57,7 +60,7 @@ class BillFragment : Fragment() {
                     view: View?,
                     position: Int,
                     id: Long
-                ) { var selectedItem = binding?.lvListArrayAdapter as AdapterDataClass
+                ) { var selectedItem = binding?.lvListArrayAdapter?.selectedItem as AdapterDataClass
                     binding?.item?.setText(selectedItem.item)
                    binding?.etEnterQuantity?.setText(selectedItem.Quantity.toString())
                     
@@ -67,8 +70,11 @@ class BillFragment : Fragment() {
             }
         binding?.btnFabAdd?.setOnClickListener{
             if (binding?.etEnterQuantity?.text?.toString()?.trim().isNullOrEmpty()){
-                binding?.etEnterQuantity?.error = "enter Quantity"
-            } else{
+                binding?.etEnterQuantity?.error ="enter quantity"
+            } else if((binding?.etEnterQuantity?.text?.toString()?.toIntOrNull()?:0) >selectedItem.Quantity.toString().toInt()){
+                binding?.etEnterQuantity?.error = "select quantity"
+            }
+            else{
                 number++
                 binding?.etEnterQuantity?.setText(number.toString())
             }
@@ -76,7 +82,11 @@ class BillFragment : Fragment() {
         binding?.btnFabSub?.setOnClickListener{
             if (binding?.etEnterQuantity?.text?.toString()?.trim().isNullOrEmpty() ){
                 binding?.etEnterQuantity?.error = "enter Quantity"
-            } else{
+            }
+            else if((binding?.etEnterQuantity?.text?.toString()?.trim()?.toIntOrNull()?:0)<= 1){
+                binding?.etEnterQuantity?.error = "select quantity"
+            }
+            else{
                 number--
                 binding?.etEnterQuantity?.setText(number.toString())
             }
