@@ -15,6 +15,7 @@ import com.tanveer.assignmenttask2.databinding.FragmentBillBinding
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+
 /**
  * A simple [Fragment] subclass.
  * Use the [BillFragment.newInstance] factory method to
@@ -69,10 +70,9 @@ class BillFragment : Fragment() {
                 }
             }
         binding?.btnFabAdd?.setOnClickListener{
-            if (binding?.etEnterQuantity?.text?.toString()?.trim().isNullOrEmpty()){
-                binding?.etEnterQuantity?.error ="enter quantity"
-            } else if((binding?.etEnterQuantity?.text?.toString()?.toIntOrNull()?:0) >selectedItem.Quantity.toString().toInt()){
-                binding?.etEnterQuantity?.error = "select quantity"
+            var selectedItem = binding?.lvListArrayAdapter?.selectedItem as AdapterDataClass
+             if((binding?.etEnterQuantity?.text?.toString()?.trim()?.toInt()!! >= selectedItem.Quantity.toString().toInt())){
+                     Toast.makeText(requireContext(), "cannot select this quantity", Toast.LENGTH_SHORT).show()
             }
             else{
                 number++
@@ -80,11 +80,8 @@ class BillFragment : Fragment() {
             }
         }
         binding?.btnFabSub?.setOnClickListener{
-            if (binding?.etEnterQuantity?.text?.toString()?.trim().isNullOrEmpty() ){
-                binding?.etEnterQuantity?.error = "enter Quantity"
-            }
-            else if((binding?.etEnterQuantity?.text?.toString()?.trim()?.toIntOrNull()?:0)<= 1){
-                binding?.etEnterQuantity?.error = "select quantity"
+             if((binding?.etEnterQuantity?.text?.toString()?.trim()?.toInt()!! <= 1)){
+                 Toast.makeText(requireContext(), "cannot select this quantity", Toast.LENGTH_SHORT).show()
             }
             else{
                 number--
