@@ -28,7 +28,6 @@ class BillFragment : Fragment() {
     var binding: FragmentBillBinding? = null
     var mainActivity: MainActivity? = null
     lateinit var arrayAdapter:ArrayAdapter<AdapterDataClass>
-    var  number = 0
     var selectedItem = AdapterDataClass()
     var item = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +74,8 @@ class BillFragment : Fragment() {
                      Toast.makeText(requireContext(), "cannot select this quantity", Toast.LENGTH_SHORT).show()
             }
             else{
-                number++
+                var number = binding?.etEnterQuantity?.text.toString().toInt()
+                number += 1
                 binding?.etEnterQuantity?.setText(number.toString())
             }
         }
@@ -84,7 +84,8 @@ class BillFragment : Fragment() {
                  Toast.makeText(requireContext(), "cannot select this quantity", Toast.LENGTH_SHORT).show()
             }
             else{
-                number--
+                var number = binding?.etEnterQuantity?.text.toString().toInt()
+                number -= 1
                 binding?.etEnterQuantity?.setText(number.toString())
             }
         }
